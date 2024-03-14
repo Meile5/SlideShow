@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.MainWindow">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="/easv/CSS/style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.MainWindow">
    <bottom>
       <HBox alignment="CENTER" prefHeight="99.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
          <children>
@@ -37,7 +37,7 @@
                <children>
                   <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: transparent;">
                      <graphic>
-                        <ImageView fitHeight="60.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="60.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" styleClass="rounded-image">
                            <image>
                               <Image url="@CSS/previous.png" />
                            </image>
@@ -73,7 +73,7 @@
          </padding></HBox>
    </bottom>
    <center>
-      <ImageView fitHeight="639.0" fitWidth="1037.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+      <ImageView styleClass="rounded-image" fitHeight="639.0" fitWidth="1037.0" pickOnBounds="true" preserveRatio="true"  BorderPane.alignment="CENTER">
          <image>
 
 
