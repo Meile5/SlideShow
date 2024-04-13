@@ -47,8 +47,8 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Region prefHeight="67.0" prefWidth="72.0" />
-                  <Label fx:id="imageName" prefHeight="17.0" prefWidth="400.0" text="Image Name">
+                  <Region prefHeight="67.0" prefWidth="1008.0" />
+                  <Label fx:id="imageName" prefHeight="61.0" prefWidth="170.0" wrapText="true">
                      <font>
                         <Font size="20.0" />
                      </font>
