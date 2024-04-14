@@ -1,6 +1,7 @@
 package easv;
 
-import javafx.application.Platform;
+import
+        javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -66,7 +67,7 @@ public class MainWindow implements Initializable {
 
     public void previousPicture(ActionEvent actionEvent) {
         if (!images.isEmpty()) {
-            currentIndex = (currentIndex - 1 + images.size()) % images.size();
+            currentIndex = (currentIndex - 1 + images.size()) % images.size();gi
             imageView.setImage(images.get(currentIndex));
         }
     }
