@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import java.net.URL;
@@ -17,6 +16,14 @@ import java.util.ResourceBundle;
 import java.io.File;
 
 public class MainWindow implements Initializable {
+    @FXML
+   public Label red;
+    @FXML
+    public Label blue;
+    @FXML
+    public Label green;
+    @FXML
+    public Label mixed;
     @FXML
     private Label imageName;
     @FXML
@@ -38,6 +45,7 @@ public class MainWindow implements Initializable {
         stackPane.widthProperty().addListener((obs, oldVal, newVal) -> resizeImageView());
         stackPane.heightProperty().addListener((obs, oldVal, newVal) -> resizeImageView());
         playPauseImage.setImage(play);
+        updateColorLabels();
     }
 
     private void resizeImageView() {
@@ -57,10 +65,12 @@ public class MainWindow implements Initializable {
             for (File file : selectedFiles) {
                 images.add(new Image(file.toURI().toString()));
                 imageNames.add(file.getName());
+
             }
             if (!images.isEmpty()) {
                 imageView.setImage(images.get(currentIndex));
                 imageName.setText(imageNames.get(currentIndex));
+                updateColorLabels();
             }
         }
     }
@@ -70,11 +80,13 @@ public class MainWindow implements Initializable {
             playPauseImage.setImage(pause);
             if (!images.isEmpty()) {
                 if (slideshowController == null) {
-                    slideshowController = new SlideshowController(images, imageNames, imageView, imageName);
+                    slideshowController = new SlideshowController(images, imageNames, imageView, imageName, red, green, blue, mixed);
+                    slideshowController.setCurrentIndex(currentIndex);
                     slideshowController.startSlideshow();
                     disableButtons();
                 } else {
-                    currentIndex = slideshowController.getCurrentIndex();
+                    //currentIndex = slideshowController.getCurrentIndex();
+                    slideshowController.setCurrentIndex(currentIndex);
                     slideshowController.resumeSlideshow();
                     disableButtons();
                 }
@@ -94,7 +106,8 @@ public class MainWindow implements Initializable {
             currentIndex = (currentIndex + 1) % images.size();
             imageView.setImage(images.get(currentIndex));
             imageName.setText(imageNames.get(currentIndex));
-            slideshowController.setCurrentIndex(currentIndex);
+            updateColorLabels();
+
         }
     }
 
@@ -103,7 +116,8 @@ public class MainWindow implements Initializable {
             currentIndex = (currentIndex - 1 + images.size()) % images.size();
             imageView.setImage(images.get(currentIndex));
             imageName.setText(imageNames.get(currentIndex));
-            slideshowController.setCurrentIndex(currentIndex);
+            updateColorLabels();
+
         }
     }
 
@@ -117,5 +131,14 @@ public class MainWindow implements Initializable {
         nextButton.setDisable(false);
         previousButton.setDisable(false);
         uploadButton.setDisable(false);
+    }
+    private void updateColorLabels() {
+        if (!images.isEmpty()) {
+            ColorCounter counts = new ColorCounter(images.get(currentIndex));
+            red.setText("Red: " + counts.getRedCount());
+            green.setText("Green: " + counts.getGreenCount());
+            blue.setText("Blue: " + counts.getBlueCount());
+            mixed.setText("Mixed: " + counts.getMixedCount());
+        }
     }
 }
