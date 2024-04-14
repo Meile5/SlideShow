@@ -17,13 +17,21 @@ public class SlideshowController extends Thread {
     private final ScheduledExecutorService executorService;
     private int currentIndex = 0;
     private boolean running = false;
+    private final Label red;
+    private final Label green;
+    private final Label blue;
+    private final Label mixed;
 
 
-    public SlideshowController(List<Image> images, List<String> imageNames, ImageView imageView, Label name) {
+    public SlideshowController(List<Image> images, List<String> imageNames, ImageView imageView, Label name, Label red, Label green, Label blue, Label mixed) {
         this.images = images;
         this.imageView = imageView;
         this.imageNames = imageNames;
         this.imageName = name;
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+        this.mixed = mixed;
         this.executorService = Executors.newSingleThreadScheduledExecutor();
     }
 
@@ -35,6 +43,7 @@ public class SlideshowController extends Thread {
                     currentIndex = (currentIndex + 1) % images.size();
                     imageView.setImage(images.get(currentIndex));
                     imageName.setText(imageNames.get(currentIndex));
+                    updateColorLabels();
                 });
             }
         }, 2, 2, TimeUnit.SECONDS);
@@ -59,5 +68,13 @@ public class SlideshowController extends Thread {
 
     public void setCurrentIndex(int currentIndex) {
         this.currentIndex = currentIndex;
+    }
+
+    private void updateColorLabels() {
+        ColorCounter counts = new ColorCounter(images.get(currentIndex));
+        red.setText("Red: " + counts.getRedCount());
+        green.setText("Green: " + counts.getGreenCount());
+        blue.setText("Blue: " + counts.getBlueCount());
+        mixed.setText("Mixed: " + counts.getMixedCount());
     }
 }
