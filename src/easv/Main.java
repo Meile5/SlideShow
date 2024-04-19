@@ -15,8 +15,17 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/easv/MainWindow.fxml"));
         Parent root = loader.load();
+        MainWindowController mainWindowController = loader.getController();
         primaryStage.setTitle("PixelPioneers");
         primaryStage.setScene(new Scene(root));
+        addCloseListener(primaryStage,mainWindowController);
         primaryStage.show();
     }
+
+    private void  addCloseListener(Stage stage,MainWindowController mainWindowController){
+        stage.setOnCloseRequest(event->{
+            mainWindowController.closeSlideShow();
+        });
+    }
+
 }

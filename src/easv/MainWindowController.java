@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.io.File;
 
-public class MainWindow implements Initializable {
+public class MainWindowController implements Initializable {
     @FXML
    public Label red;
     @FXML
@@ -48,7 +48,6 @@ public class MainWindow implements Initializable {
         stackPane.widthProperty().addListener((obs, oldVal, newVal) -> resizeImageView());
         stackPane.heightProperty().addListener((obs, oldVal, newVal) -> resizeImageView());
         playPauseImage.setImage(play);
-     //   updateColorLabels();
     }
 
     private void resizeImageView() {
@@ -78,6 +77,11 @@ public class MainWindow implements Initializable {
         }
     }
 
+    public void closeSlideShow(){
+        if(slideshowController!=null){
+            slideshowController.stopSlideshow();
+        }
+    }
     public void playSlideshow(ActionEvent actionEvent) {
         if (playPauseImage.getImage() == play) {
             playPauseImage.setImage(pause);
@@ -164,7 +168,4 @@ public class MainWindow implements Initializable {
         }
         colourService.restart();
     }
-
-
-
 }
