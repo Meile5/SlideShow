@@ -1,5 +1,6 @@
 package easv;
 
+import easv.be.ColorPixelCounter;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -43,7 +44,13 @@ public class SlideshowController extends Thread {
                     currentIndex = (currentIndex + 1) % images.size();
                     imageView.setImage(images.get(currentIndex));
                     imageName.setText(imageNames.get(currentIndex));
-                    //updateColorLabels();
+                    ColorCounter colorCounter = new ColorCounter(images.get(currentIndex));
+                    try {
+                        ColorPixelCounter colorPixelCounter =  colorCounter.call();
+                        updateColorLabels(colorPixelCounter);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                 });
             }
         }, 2, 2, TimeUnit.SECONDS);
@@ -69,13 +76,15 @@ public class SlideshowController extends Thread {
     public void setCurrentIndex(int currentIndex) {
         this.currentIndex = currentIndex;
     }
+
+        private void updateColorLabels(ColorPixelCounter colorPixelCounter) {
+
+        red.setText("Red: " + colorPixelCounter.getRedCount());
+        green.setText("Green: " + colorPixelCounter.getGreenCount());
+        blue.setText("Blue: " + colorPixelCounter.getBlueCount());
+        mixed.setText("Mixed: " + colorPixelCounter.getMixedCount());
+    }
 }
 
-//    private void updateColorLabels() {
-//        ColorCounter counts = new ColorCounter(images.get(currentIndex));
-//        red.setText("Red: " + counts.getRedCount());
-//        green.setText("Green: " + counts.getGreenCount());
-//        blue.setText("Blue: " + counts.getBlueCount());
-//        mixed.setText("Mixed: " + counts.getMixedCount());
-//    }
-//}
+
+
