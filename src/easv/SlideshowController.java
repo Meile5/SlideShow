@@ -43,7 +43,7 @@ public class SlideshowController extends Thread {
                     currentIndex = (currentIndex + 1) % images.size();
                     imageView.setImage(images.get(currentIndex));
                     imageName.setText(imageNames.get(currentIndex));
-                    updateColorLabels();
+                    //updateColorLabels();
                 });
             }
         }, 2, 2, TimeUnit.SECONDS);
@@ -69,12 +69,13 @@ public class SlideshowController extends Thread {
     public void setCurrentIndex(int currentIndex) {
         this.currentIndex = currentIndex;
     }
-
-    private void updateColorLabels() {
-        ColorCounter counts = new ColorCounter(images.get(currentIndex));
-        red.setText("Red: " + counts.getRedCount());
-        green.setText("Green: " + counts.getGreenCount());
-        blue.setText("Blue: " + counts.getBlueCount());
-        mixed.setText("Mixed: " + counts.getMixedCount());
-    }
 }
+
+//    private void updateColorLabels() {
+//        ColorCounter counts = new ColorCounter(images.get(currentIndex));
+//        red.setText("Red: " + counts.getRedCount());
+//        green.setText("Green: " + counts.getGreenCount());
+//        blue.setText("Blue: " + counts.getBlueCount());
+//        mixed.setText("Mixed: " + counts.getMixedCount());
+//    }
+//}

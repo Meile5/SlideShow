@@ -1,5 +1,7 @@
 package easv;
-
+import easv.be.ColorPixelCounter;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -40,12 +42,13 @@ public class MainWindow implements Initializable {
     private final Image pause = new Image("easv/resources/pause2.png");
     private SlideshowController slideshowController;
 
+    private Service<ColorPixelCounter> colourService;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         stackPane.widthProperty().addListener((obs, oldVal, newVal) -> resizeImageView());
         stackPane.heightProperty().addListener((obs, oldVal, newVal) -> resizeImageView());
         playPauseImage.setImage(play);
-        updateColorLabels();
+     //   updateColorLabels();
     }
 
     private void resizeImageView() {
@@ -107,7 +110,6 @@ public class MainWindow implements Initializable {
             imageView.setImage(images.get(currentIndex));
             imageName.setText(imageNames.get(currentIndex));
             updateColorLabels();
-
         }
     }
 
@@ -117,7 +119,6 @@ public class MainWindow implements Initializable {
             imageView.setImage(images.get(currentIndex));
             imageName.setText(imageNames.get(currentIndex));
             updateColorLabels();
-
         }
     }
 
@@ -133,12 +134,37 @@ public class MainWindow implements Initializable {
         uploadButton.setDisable(false);
     }
     private void updateColorLabels() {
+
         if (!images.isEmpty()) {
-            ColorCounter counts = new ColorCounter(images.get(currentIndex));
-            red.setText("Red: " + counts.getRedCount());
-            green.setText("Green: " + counts.getGreenCount());
-            blue.setText("Blue: " + counts.getBlueCount());
-            mixed.setText("Mixed: " + counts.getMixedCount());
+            colourService = new Service<ColorPixelCounter>() {
+               @Override
+               protected Task<ColorPixelCounter> createTask() {
+                   return new Task<ColorPixelCounter>() {
+                       @Override
+                       protected ColorPixelCounter call() throws Exception {
+                           ColorCounter colorCounter = new ColorCounter(images.get(currentIndex));
+                           return colorCounter.call() ;
+                       }
+                   };
+               }
+           };
+           colourService.setOnSucceeded((event)->{
+               ColorPixelCounter colorPixelCounter = colourService.getValue();
+               red.setText("Red: " + colorPixelCounter.getRedCount());
+               green.setText("Green: " + colorPixelCounter.getGreenCount());
+               blue.setText("Blue: " + colorPixelCounter.getBlueCount());
+               mixed.setText("Mixed: " + colorPixelCounter.getMixedCount());
+           });
+            colourService.setOnFailed((event)->{
+                red.setText("Red: " + "not available");
+                green.setText("Green: " + "not available");
+                blue.setText("Blue: " + "not available");
+                mixed.setText("Mixed: " + "not available");
+            });
         }
+        colourService.restart();
     }
+
+
+
 }

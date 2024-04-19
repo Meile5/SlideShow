@@ -1,22 +1,24 @@
 package easv;
-
+import easv.be.ColorPixelCounter;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-
 import java.awt.image.BufferedImage;
 
-public class ColorCounter {
+public class ColorCounter  extends Task<ColorPixelCounter> {
     private int redCount;
     private int greenCount;
     private int blueCount;
     private int mixedCount;
+    private Image imageToCount;
 
     public ColorCounter(Image image) {
-        countColors(image);
+        this.imageToCount= image;
     }
 
-    private void countColors(Image image) {
-        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+    @Override
+    protected ColorPixelCounter call() throws Exception {
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(this.imageToCount, null);
         //iterates over each pixel in the image. The outer loop iterates over the rows (y-coordinates),
         // the inner loop iterates over the columns (x-coordinates).
         for (int y = 0; y < bufferedImage.getHeight(); y++) {
@@ -37,21 +39,6 @@ public class ColorCounter {
                 }
             }
         }
-    }
-
-    public int getRedCount() {
-        return redCount;
-    }
-
-    public int getGreenCount() {
-        return greenCount;
-    }
-
-    public int getBlueCount() {
-        return blueCount;
-    }
-
-    public int getMixedCount() {
-        return mixedCount;
+        return new ColorPixelCounter(redCount,greenCount,blueCount,mixedCount) ;
     }
 }
