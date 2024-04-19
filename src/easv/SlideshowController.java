@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class SlideshowController extends Thread {
+public class SlideshowController{
     private final List<Image> images;
     private final List<String> imageNames;
     private final ImageView imageView;
